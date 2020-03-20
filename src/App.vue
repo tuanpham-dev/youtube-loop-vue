@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import localStorage from 'local-storage'
 import Header from './components/Header.vue'
 import YouTube from './components/YouTube.vue'
 
@@ -48,6 +49,21 @@ export default {
       playingVideo: -1
     }
   },
+  mounted() {
+    const savedVideos = localStorage.get('videos')
+    const videos = []
+
+    if (savedVideos) {
+      savedVideos.forEach(video => {
+        videos.push({
+          id: this.getNextId(),
+          video: video.video
+        })
+      })
+    }
+
+    this.videos = videos
+  },
   methods: {
     getNextId() {
       return this.nextId++
@@ -61,6 +77,7 @@ export default {
       }]
 
       this.videos = videos
+      localStorage.set('videos', videos)
     },
 
     removeVideo(i) {
@@ -78,6 +95,7 @@ export default {
       videos.splice(i - 1, 0, currentVideo)
 
       this.videos = videos
+      localStorage.set('videos', videos)
     },
 
     moveVideoDown(i) {
@@ -88,6 +106,7 @@ export default {
       videos.splice(i + 1, 0, currentVideo)
 
       this.videos = videos
+      localStorage.set('videos', videos)
     },
 
     stopPlaying() {
