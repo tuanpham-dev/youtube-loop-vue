@@ -85,6 +85,7 @@ export default {
       videos.splice(i, 1)
 
       this.videos = videos
+      localStorage.set('videos', videos)
     },
 
     moveVideoUp(i) {
